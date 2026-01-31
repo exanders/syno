@@ -92,8 +92,9 @@ function wrapModule(name, jsCode, allModuleNames) {
       const extendsRegex = new RegExp(`(extends\\s+)(${moduleName})\\b`, 'g');
       processedCode = processedCode.replace(extendsRegex, '$1modules.$2');
 
-      // Replace "(ModuleName)" pattern for extend1 calls
-      const extendCallRegex = new RegExp(`\\(${moduleName}\\)`, 'g');
+      // Replace "(ModuleName)" pattern for extend1 calls (but not inside strings)
+      // Only match when preceded by a non-quote character or start of line
+      const extendCallRegex = new RegExp(`\\(${moduleName}\\)(?=;|,|\\s|$)`, 'g');
       processedCode = processedCode.replace(extendCallRegex, `(modules.${moduleName})`);
 
       // Replace "new ModuleName(" pattern for instantiation
@@ -101,8 +102,9 @@ function wrapModule(name, jsCode, allModuleNames) {
       processedCode = processedCode.replace(newRegex, `new modules.${moduleName}(`);
 
       // Replace standalone ModuleName. references (e.g., Utils.something)
-      const staticRefRegex = new RegExp(`\\b${moduleName}\\.`, 'g');
-      processedCode = processedCode.replace(staticRefRegex, `modules.${moduleName}.`);
+      // But NOT inside strings - only when preceded by whitespace, =, (, [, {, or start of line
+      const staticRefRegex = new RegExp(`(^|[\\s=\\(\\[\\{,;])${moduleName}\\.`, 'g');
+      processedCode = processedCode.replace(staticRefRegex, `$1modules.${moduleName}.`);
     }
   }
 

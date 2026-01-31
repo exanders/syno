@@ -153,7 +153,7 @@
               return Auth.__super__.constructor.apply(this, arguments);
             }
           
-            api = 'SYNO.modules.API.Auth';
+            api = 'SYNO.API.Auth';
           
             version = 3;
           
