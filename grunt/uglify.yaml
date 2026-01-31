@@ -1,3 +1,9 @@
+options:
+    parse:
+        bare_returns: true
+    compress:
+        negate_iife: false
+
 syno-5.x.min.js:
     src: dist/syno-5.x.min.js
     dest: dist/syno-5.x.min.js

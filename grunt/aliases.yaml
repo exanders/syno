@@ -3,7 +3,7 @@ default:
     - clean:tmp
     - coffee:syno-cli
     - concat:syno-cli
-    - mokuai-coffee:syno
+    - shell:build-syno
     - shell:compile-definitions-5.x
     - shell:compile-definitions-6.x
     - shell:syno-browserify-5.x

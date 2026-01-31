@@ -1,9 +1,12 @@
+build-syno:
+    command: 'node scripts/build-syno.js'
+
 compile-definitions-5.x:
     command: 'sh scripts/compile_libs.sh definitions/5.x'
 
 compile-definitions-6.x:
     command: 'sh scripts/compile_libs.sh definitions/6.x'
- 
+
 syno-cli:
     command: 'sh test/cli/syno.sh'
 

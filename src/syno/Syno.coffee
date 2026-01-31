@@ -1,5 +1,6 @@
 # Require node modules
-request = require 'request'
+axios = require 'axios'
+https = require 'https'
 fs = require 'fs'
 path = require 'path'
 {defaults, mapValues, keys, values, flatten, filter,
@@ -59,9 +60,31 @@ class Syno
         then throw new Error "Api version: #{@apiVersion} is not available.
         Available versions are: #{apiVersionsAvailable.join(', ')}"
 
-        # Create request with jar
-        @request = request.defaults rejectUnauthorized: not @ignoreCertificateErrors, json: true
-        request.debug = true if @debug
+        # Create https agent for certificate handling
+        httpsAgent = new https.Agent rejectUnauthorized: not @ignoreCertificateErrors
+
+        # Create axios instance
+        axiosInstance = axios.create
+            httpsAgent: httpsAgent
+            validateStatus: -> true  # Don't throw on any status code, let API.coffee handle it
+
+        # Add debug interceptor if debug mode
+        if @debug
+            axiosInstance.interceptors.request.use (config) ->
+                console.log '[DEBUG] Request:', config.method?.toUpperCase(), config.url, config.params
+                config
+            axiosInstance.interceptors.response.use (response) ->
+                console.log '[DEBUG] Response:', response.status, response.data
+                response
+
+        # Create request method that mimics the old callback interface
+        @request = (options, callback) ->
+            {url, qs} = options
+            axiosInstance.get url, params: qs
+                .then (response) ->
+                    callback null, {statusCode: response.status}, response.data
+                .catch (error) ->
+                    callback error
         # Init session property
         @session = null
 
