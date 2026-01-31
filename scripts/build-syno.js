@@ -85,7 +85,7 @@ function wrapModule(name, jsCode, allModuleNames) {
   // This is needed because we're not using 'with(modules)' anymore
   let processedCode = jsCode;
 
-  // Replace class inheritance patterns: extends ModuleName -> extends modules.ModuleName
+  // Replace class inheritance patterns and instantiation patterns
   for (const moduleName of allModuleNames) {
     if (moduleName !== name) {
       // Replace "extends ModuleName" pattern
@@ -95,6 +95,14 @@ function wrapModule(name, jsCode, allModuleNames) {
       // Replace "(ModuleName)" pattern for extend1 calls
       const extendCallRegex = new RegExp(`\\(${moduleName}\\)`, 'g');
       processedCode = processedCode.replace(extendCallRegex, `(modules.${moduleName})`);
+
+      // Replace "new ModuleName(" pattern for instantiation
+      const newRegex = new RegExp(`\\bnew ${moduleName}\\(`, 'g');
+      processedCode = processedCode.replace(newRegex, `new modules.${moduleName}(`);
+
+      // Replace standalone ModuleName. references (e.g., Utils.something)
+      const staticRefRegex = new RegExp(`\\b${moduleName}\\.`, 'g');
+      processedCode = processedCode.replace(staticRefRegex, `modules.${moduleName}.`);
     }
   }
 

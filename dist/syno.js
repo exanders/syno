@@ -92,7 +92,7 @@
             API.prototype.requestAPI = function(args) {
               var apiInfos, done, opts, params, ref1, requiredParams;
               apiInfos = args.apiInfos, requiredParams = args.requiredParams, params = args.params, done = args.done;
-              ref1 = Utils.optionalParamsAndDone({
+              ref1 = modules.Utils.optionalParamsAndDone({
                 params: params,
                 done: done
               }), params = ref1.params, done = ref1.done;
@@ -153,7 +153,7 @@
               return Auth.__super__.constructor.apply(this, arguments);
             }
           
-            api = 'SYNO.API.Auth';
+            api = 'SYNO.modules.API.Auth';
           
             version = 3;
           
@@ -959,14 +959,14 @@
                 });
               };
               this.session = null;
-              this.auth = new Auth(this);
-              this.dsm = this.diskStationManager = new DSM(this);
-              this.fs = this.fileStation = new FileStation(this);
-              this.dl = this.downloadStation = new DownloadStation(this);
-              this.as = this.audioStation = new AudioStation(this);
-              this.vs = this.videoStation = new VideoStation(this);
-              this.dtv = this.videoStationDTV = new VideoStationDTV(this);
-              this.ss = this.surveillanceStation = new SurveillanceStation(this);
+              this.auth = new modules.Auth(this);
+              this.dsm = this.diskStationManager = new modules.DSM(this);
+              this.fs = this.fileStation = new modules.FileStation(this);
+              this.dl = this.downloadStation = new modules.DownloadStation(this);
+              this.as = this.audioStation = new modules.AudioStation(this);
+              this.vs = this.videoStation = new modules.VideoStation(this);
+              this.dtv = this.videoStationDTV = new modules.VideoStationDTV(this);
+              this.ss = this.surveillanceStation = new modules.SurveillanceStation(this);
             }
           
             Syno.prototype.loadDefinitions = function() {
@@ -1009,7 +1009,7 @@
                           if (typeof method === 'object') {
                             method = first(keys(method));
                           }
-                          functionName = Utils.createFunctionName(api, method);
+                          functionName = modules.Utils.createFunctionName(api, method);
                           path = 'path' in definitions[api] ? definitions[api].path : 'entry.cgi';
                           version = 'maxVersion' in definitions[api] ? definitions[api].maxVersion : 1;
                           results2.push(object.__proto__[functionName] = new Function('params', 'done', 'this.requestAPI({ params: params, done: done, apiInfos: { sessionName: ' + "'" + object.sessionName + "'" + ', api: ' + "'" + api + "'" + ', version:' + "'" + version + "'" + ', path: ' + "'" + path + "'" + ', method: ' + "'" + method + "'" + '} });'));
