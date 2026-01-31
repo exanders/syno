@@ -38,16 +38,16 @@
     "axios": "^1.7.0",
     "commander": "^4.1.0",
     "debug": "^4.4.3",
-    "js-yaml": "^3.6.1",
-    "lodash": "^4.17.4",
-    "minimist": "^0.2.1",
-    "nconf": "^0.10.0",
+    "js-yaml": "^3.14.2",
+    "lodash": "^4.17.21",
+    "minimist": "^1.2.8",
+    "nconf": "^0.12.1",
     "ospath": "^1.2.2",
     "pluralize": "^8.0.0"
   },
   "devDependencies": {
     "brfs": "^2.0.2",
-    "browserify": "^16.5.0",
+    "browserify": "^17.0.1",
     "coffee-script": "^1.12.7",
     "coffeelint": "^2.1.0",
     "grunt": "^1.6.0",
@@ -58,5 +58,13 @@
     "grunt-contrib-uglify": "^5.2.0",
     "grunt-shell": "^4.0.0",
     "load-grunt-config": "^3.0.1"
+  },
+  "overrides": {
+    "elliptic": "^6.6.1",
+    "minimist": "^1.2.8",
+    "load-grunt-config": {
+      "js-yaml": "^3.14.2",
+      "lodash": "^4.17.21"
+    }
   }
 }
