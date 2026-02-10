@@ -67,6 +67,7 @@ class Syno
         axiosInstance = axios.create
             httpsAgent: httpsAgent
             validateStatus: -> true  # Don't throw on any status code, let API.coffee handle it
+            paramsSerializer: encode: encodeURIComponent
 
         # Add debug interceptor if debug mode
         if @debug

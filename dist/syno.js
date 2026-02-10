@@ -932,6 +932,9 @@
                 httpsAgent: httpsAgent,
                 validateStatus: function() {
                   return true;
+                },
+                paramsSerializer: {
+                  encode: encodeURIComponent
                 }
               });
               if (this.debug) {
